@@ -1,19 +1,19 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
-import { footer } from '../styles/footer.scss';
+import Navbar from './static/Navbar';
 
-const App = ({ children }) =>
-    <div>
-        <h1>Filter table</h1>
-        { children }
-        <footer className={footer}>
-            <Link to="/">Filterable Table</Link>
-            <Link to="/about">About</Link>
-        </footer>
-    </div>;
+export default class App extends React.Component {
 
-App.propTypes = {
-    children: PropTypes.object
+    render() {
+        return (
+            <div>
+                <Navbar path={this.props.location}/>
+                { this.props.children }
+            </div>
+        );
+    }
 };
 
-export default App;
+App.propTypes = {
+    children: PropTypes.object,
+    location: PropTypes.object,
+};

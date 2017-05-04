@@ -6,8 +6,8 @@ export default function configureStore(initialState) {
     const store = createStore(
         rootReducer,
         initialState,
-        DevTools.instrument()
+        DevTools.instrument(),
     );
 
     return store;
-}
+};
