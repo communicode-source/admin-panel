@@ -1,12 +1,12 @@
-import React from 'react';
-// import { Link } from 'react-router';
-import userList from '../../data/users';
+import React, { PropTypes } from 'react';;
 import {createFilter} from 'react-search-input';
 
 import UsersTable from '../UsersTable';
 import Pagination from '../Pagination';
 
-export default class Users extends React.Component {
+import { connect } from 'react-redux';
+
+class Users extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,7 +30,10 @@ export default class Users extends React.Component {
     }
 
     render() {
-        const filteredUsers = userList.filter(createFilter(this.state.searchTerm, ['name', '_id', 'email', 'company']));
+        let filteredUsers = [];
+        if(!this.props.users.loading) {
+            filteredUsers = this.props.users.data.data.filter(createFilter(this.state.searchTerm, ['name', '_id', 'email', 'company']));
+        }
         return (
             <div className="container">
                 <div className="page-header">
@@ -52,9 +55,27 @@ export default class Users extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <UsersTable users={filteredUsers.slice((this.state.page - 1) * 10, this.state.page * 10)} />
+                    {
+                        this.props.users.loading ? (
+                            <div>Loading...</div>
+                        ) : (
+                            <UsersTable users={filteredUsers.slice((this.state.page - 1)  * 10, this.state.page * 10)}/>
+                        )
+                    }
                 </div>
             </div>
         );
     }
+}
+
+Users.propTypes = {
+    users: PropTypes.object
 };
+
+function select(state) {
+    return {
+        users: state.users
+    };
+}
+
+export default connect(select)(Users);

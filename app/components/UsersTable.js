@@ -11,6 +11,14 @@ export default class UsersTable extends React.Component {
     }
     render() {
         const users = this.props.users;
+        const userRows = users.map(user =>
+            <tr onClick={()=>this.gotoUser(user._id)} style={{cursor: 'pointer'}}>
+                <td>{user.name}</td>
+                <td>{user._id}</td>
+                <td>{user.email}</td>
+                <td>{user.company}</td>
+            </tr>
+        );
         return (
             <table className="table">
                 <thead>
@@ -22,14 +30,7 @@ export default class UsersTable extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user =>
-                        <tr onClick={()=>this.gotoUser(user._id)} style={{cursor: 'pointer'}}>
-                            <td>{user.name}</td>
-                            <td>{user._id}</td>
-                            <td>{user.email}</td>
-                            <td>{user.company}</td>
-                        </tr>
-                    )}
+                { userRows }
                 </tbody>
             </table>
         );
